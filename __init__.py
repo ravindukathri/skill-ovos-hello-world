@@ -57,6 +57,13 @@ class HelloWorldSkill(OVOSSkill):
         self.log.info("There are five types of log messages: " "info, debug, warning, error, and exception.")
         self.speak_dialog("hello.world")
 
+    @intent_handler(IntentBuilder("HelloNameIntent").require("HelloNameKeyword")) #Name
+    def handle_hello_name_intent(self, message):
+        """Skills can log useful information. These will appear in the CLI and
+        the skills.log file."""
+        self.log.info("There are five types of log messages:NAMENAMENAMENAME")
+        self.speak_dialog("hello.name")
+
     def stop(self):
         """Optional action to take when "stop" is requested by the user.
         This method should return True if it stopped something or
