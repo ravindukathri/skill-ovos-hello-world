@@ -1,29 +1,48 @@
-# <img src='https://raw.githack.com/FortAwesome/Font-Awesome/master/svgs/solid/smile.svg' card_color='#22a7f0' width='50' height='50' style='vertical-align:bottom'/> Hello World
+## Replace ovos_skill_hello_world code in docker-compose.skills.yml with following code
 
-Introductory Skill so that Skill Authors can see how an OVOS Skill is put together
+  ovos_skill_hello_world:  
+    <<: *podman
+    container_name: ovos_hello_world_skill
+    hostname: ovos_hello_world_skill
+    restart: unless-stopped
+    build:
+      context: ../skills/skill-hello-world
+      dockerfile: Dockerfile
+    logging: *default-logging
+    pull_policy: $PULL_POLICY
+    environment:
+      TZ: $TZ
+    network_mode: host
+    volumes:
+      - ${OVOS_CONFIG_FOLDER}:/home/${OVOS_USER}/.config/mycroft
+      - ${TMP_FOLDER}:/tmp/mycroft
+    depends_on:
+      ovos_core:
+        condition: service_started
 
-## About
+####
 
-This is a basic Hello Word Skill that takes an _Utterance_ from the user and provides a voice response - a _Dialog_. This Skill demonstrates the basic directory and file structure of an OVOS Skill, and is a good first Skill to study if you are interested in developing Skills for the OVOS ecosystem.
+## ovos-docker/skills/skill-hello-world    replace the dockerfile code with following code
 
-## Examples
+ARG TAG=alpha
+FROM smartgic/ovos-skill-base:${TAG}
 
-- "Hello world"
-- "How are you?"
-- "Thank you"
+ARG BUILD_DATE=07/12/2023
+ARG VERSION=2.5
 
-## Credits
+LABEL org.opencontainers.image.title="Open Voice OS OCI alerts skill image"
+LABEL org.opencontainers.image.description="A skill to schedule alarms, timers, and reminders"
+LABEL org.opencontainers.image.version=${VERSION}
+LABEL org.opencontainers.image.created=${BUILD_DATE}
+LABEL org.opencontainers.image.documentation="https://openvoiceos.github.io/community-docs"
+LABEL org.opencontainers.image.source="https://github.com/OpenVoiceOS/ovos-docker"
+LABEL org.opencontainers.image.vendor="Open Voice OS"
 
-Mycroft AI (@MycroftAI)
-OpenVoiceOS (@OpenVoiceOS)
+ARG ALPHA=true
 
-## Category
+RUN if [ "${ALPHA}" == "true" ]; then \
+    pip3 install git+https://github.com/ravindukathri/skill-ovos-hello-world.git; \
+    fi \
+    && rm -rf "${HOME}/.cache"
 
-**Configuration**
-
-## Tags
-
-#helloworld
-#first-skill
-#hello
-#greeting
+ENTRYPOINT ["ovos-skill-launcher", "skill-ovos-hello-world.ravindukathri"]
