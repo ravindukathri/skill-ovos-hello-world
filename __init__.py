@@ -39,7 +39,7 @@ class HelloWorldSkill(OVOSSkill):
         """
         return self.settings.get("my_setting", "default_value")
 
-    @intent_handler(IntentBuilder("ThankYouuIntent").require("ThankYouKeyword"))
+    @intent_handler(IntentBuilder("ThankYouuuIntent").require("ThankYouKeyword"))
     def handle_thank_you_intent(self, message):
         """This is an Adapt intent handler, it is triggered by a keyword."""
         self.speak_dialog("welcome")
