@@ -57,7 +57,7 @@ class HelloWorldSkill(OVOSSkill):
         self.log.info("There are five types of log messages: " "info, debug, warning, error, and exception.")
         self.speak_dialog("hello.world")
 
-    @intent_handler(IntentBuilder("HelloNameIntent").require("HelloNameKeyword")) #Name
+    @intent_handler(IntentBuilder("HelloNameeeeeIntent").require("HelloNameKeyword")) #Name
     def handle_hello_name_intent(self, message):
         """Skills can log useful information. These will appear in the CLI and
         the skills.log file."""
